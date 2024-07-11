@@ -6,6 +6,7 @@ from langchain_openai import ChatOpenAI
 from langchain.chains import LLMChain
 from dotenv import load_dotenv
 import streamlit as st
+import os
 
 load_dotenv()
 
@@ -14,7 +15,7 @@ documents = loader.load()
 
 print(len(documents))
 
-embeddings = OpenAIEmbeddings(openai_api_key="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")
+embeddings = OpenAIEmbeddings(openai_api_key=os.getenv('OPENAI_API_KEY')
 db = FAISS.from_documents(documents, embeddings)
 
 def retrieve_info(query):
@@ -23,7 +24,7 @@ def retrieve_info(query):
     page_contents_array = [doc.page_content for doc in similar_response]
     return page_contents_array
 
-llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613" , openai_api_key="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")
+llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k-0613" , openai_api_key=os.getenv('OPENAI_API_KEY)
 
 template = """
 You are a nurse working as a consultant to patients. 
